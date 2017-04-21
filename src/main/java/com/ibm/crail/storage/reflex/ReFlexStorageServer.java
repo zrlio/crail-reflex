@@ -1,4 +1,4 @@
-package com.ibm.crail.datanode.reflex;
+package com.ibm.crail.storage.reflex;
 
 import java.net.InetSocketAddress;
 import org.slf4j.Logger;
@@ -27,7 +27,7 @@ public class ReFlexStorageServer implements StorageServer {
 
 	@Override
 	public void registerResources(StorageRpcClient namenodeClient) throws Exception {
-		LOG.info("initalizing ReFlex datanode");
+		LOG.info("initalizing ReFlex storage");
 		long namespaceSize = 0x5d27216000L / 512 ; // for Intel device
 		namenodeClient.setBlock(0, (int) namespaceSize, 0);
 		this.alive = true;

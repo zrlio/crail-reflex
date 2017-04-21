@@ -20,9 +20,9 @@
  *
  */
 
-package com.ibm.crail.datanode.reflex.client;
+package com.ibm.crail.storage.reflex.client;
 
-import com.ibm.crail.datanode.reflex.ReFlexStorageConstants;
+import com.ibm.crail.storage.reflex.ReFlexStorageConstants;
 import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageFuture;
 import com.ibm.crail.storage.StorageResult;

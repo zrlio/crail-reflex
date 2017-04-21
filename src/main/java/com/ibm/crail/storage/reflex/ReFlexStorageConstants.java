@@ -20,7 +20,7 @@
  *
  */
 
-package com.ibm.crail.datanode.reflex;
+package com.ibm.crail.storage.reflex;
 
 import com.ibm.crail.conf.CrailConfiguration;
 import com.ibm.crail.conf.CrailConstants;
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ReFlexStorageConstants {
 
-	private final static String PREFIX = "crail.datanode.reflex";
+	private final static String PREFIX = "crail.storage.reflex";
 
 	public static final String IP_ADDR_KEY = "bindip";
 	public static InetAddress IP_ADDR;

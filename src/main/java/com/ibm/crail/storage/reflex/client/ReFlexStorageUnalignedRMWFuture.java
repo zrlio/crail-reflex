@@ -20,7 +20,7 @@
  *
  */
 
-package com.ibm.crail.datanode.reflex.client;
+package com.ibm.crail.storage.reflex.client;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

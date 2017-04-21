@@ -20,12 +20,12 @@
  *
  */
 
-package com.ibm.crail.datanode.reflex;
+package com.ibm.crail.storage.reflex;
 
 import com.ibm.crail.conf.CrailConfiguration;
 import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageServer;
-import com.ibm.crail.datanode.reflex.client.ReFlexStorageEndpoint;
+import com.ibm.crail.storage.reflex.client.ReFlexStorageEndpoint;
 import com.ibm.crail.utils.CrailUtils;
 import com.ibm.crail.storage.StorageTier;
 import org.apache.commons.cli.*;
