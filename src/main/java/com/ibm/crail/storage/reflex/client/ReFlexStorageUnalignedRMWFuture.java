@@ -29,6 +29,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.ibm.crail.CrailBuffer;
 import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageFuture;
 import com.ibm.crail.storage.StorageResult;
@@ -38,8 +39,8 @@ public class ReFlexStorageUnalignedRMWFuture extends ReFlexStorageUnalignedFutur
 	private boolean initDone;
 	private StorageFuture writeFuture;
 
-	public ReFlexStorageUnalignedRMWFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, ByteBuffer buffer,
-									  BlockInfo remoteMr, long remoteOffset, ByteBuffer stagingBuffer)
+	public ReFlexStorageUnalignedRMWFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, CrailBuffer buffer,
+									  BlockInfo remoteMr, long remoteOffset, CrailBuffer stagingBuffer)
 			throws NoSuchFieldException, IllegalAccessException {
 		super(future, endpoint, buffer, remoteMr, remoteOffset, stagingBuffer);
 		initDone = false;
@@ -52,8 +53,8 @@ public class ReFlexStorageUnalignedRMWFuture extends ReFlexStorageUnalignedFutur
 		if (!done) {
 			if (!initDone) {
 				initFuture.get(l, timeUnit);
-				long srcAddr = ReFlexStorageUtils.getAddress(buffer) + localOffset;
-				long dstAddr = ReFlexStorageUtils.getAddress(stagingBuffer) + ReFlexStorageUtils.namespaceSectorOffset(
+				long srcAddr = buffer.address() + localOffset;
+				long dstAddr = stagingBuffer.address() + ReFlexStorageUtils.namespaceSectorOffset(
 						endpoint.getSectorSize(), remoteOffset);
 				unsafe.copyMemory(srcAddr, dstAddr, len);
 
@@ -61,7 +62,7 @@ public class ReFlexStorageUnalignedRMWFuture extends ReFlexStorageUnalignedFutur
 				int alignedLen = (int) ReFlexStorageUtils.alignLength(endpoint.getSectorSize(), remoteOffset, len);
 				stagingBuffer.limit(alignedLen);
 				try {
-					writeFuture = endpoint.write(stagingBuffer, null, remoteMr,
+					writeFuture = endpoint.write(stagingBuffer, remoteMr,
 							ReFlexStorageUtils.alignOffset(endpoint.getSectorSize(), remoteOffset));
 				} catch (IOException e) {
 					throw new ExecutionException(e);

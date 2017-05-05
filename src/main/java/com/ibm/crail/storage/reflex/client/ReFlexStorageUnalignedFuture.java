@@ -22,6 +22,7 @@
 
 package com.ibm.crail.storage.reflex.client;
 
+import com.ibm.crail.CrailBuffer;
 import com.ibm.crail.storage.reflex.ReFlexStorageConstants;
 import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageFuture;
@@ -39,18 +40,18 @@ import java.util.concurrent.TimeoutException;
 public abstract class ReFlexStorageUnalignedFuture implements StorageFuture, StorageResult  {
 	protected final ReFlexStorageFuture initFuture;
 	protected final ReFlexStorageEndpoint endpoint;
-	protected final ByteBuffer buffer;
+	protected final CrailBuffer buffer;
 	protected final long localOffset;
 	protected final BlockInfo remoteMr;
 	protected final long remoteOffset;
 	protected final int len;
-	protected final ByteBuffer stagingBuffer;
+	protected final CrailBuffer stagingBuffer;
 	protected boolean done;
 	protected Exception exception;
 	protected static Unsafe unsafe;
 
-	public ReFlexStorageUnalignedFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, ByteBuffer buffer,
-								   BlockInfo remoteMr, long remoteOffset, ByteBuffer stagingBuffer)
+	public ReFlexStorageUnalignedFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, CrailBuffer buffer,
+								   BlockInfo remoteMr, long remoteOffset, CrailBuffer stagingBuffer)
 			throws NoSuchFieldException, IllegalAccessException {
 		this.initFuture = future;
 		this.endpoint = endpoint;

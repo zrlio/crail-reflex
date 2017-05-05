@@ -22,6 +22,7 @@
 
 package com.ibm.crail.storage.reflex.client;
 
+import com.ibm.crail.CrailBuffer;
 import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageResult;
@@ -34,8 +35,8 @@ import java.util.concurrent.TimeoutException;
 
 public class ReFlexStorageUnalignedReadFuture extends ReFlexStorageUnalignedFuture {
 
-	public ReFlexStorageUnalignedReadFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, ByteBuffer buffer, BlockInfo remoteMr,
-									   long remoteOffset, ByteBuffer stagingBuffer)
+	public ReFlexStorageUnalignedReadFuture(ReFlexStorageFuture future, ReFlexStorageEndpoint endpoint, CrailBuffer buffer, BlockInfo remoteMr,
+									   long remoteOffset, CrailBuffer stagingBuffer)
 			throws NoSuchFieldException, IllegalAccessException {
 		super(future, endpoint, buffer, remoteMr, remoteOffset, stagingBuffer);
 	}
@@ -46,9 +47,9 @@ public class ReFlexStorageUnalignedReadFuture extends ReFlexStorageUnalignedFutu
 		}
 		if (!done) {
 			initFuture.get(l, timeUnit);
-			long srcAddr = ReFlexStorageUtils.getAddress(stagingBuffer) +
+			long srcAddr = stagingBuffer.address() +
 					ReFlexStorageUtils.namespaceSectorOffset(endpoint.getSectorSize(), remoteOffset);
-			long dstAddr = ReFlexStorageUtils.getAddress(buffer) + localOffset;
+			long dstAddr = buffer.address() + localOffset;
 			unsafe.copyMemory(srcAddr, dstAddr, len);
 			done = true;
 			try {

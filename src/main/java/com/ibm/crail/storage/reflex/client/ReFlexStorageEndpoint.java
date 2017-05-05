@@ -22,12 +22,13 @@
 
 package com.ibm.crail.storage.reflex.client;
 
+import com.ibm.crail.CrailBuffer;
 import com.ibm.crail.conf.CrailConstants;
+import com.ibm.crail.memory.BufferCache;
 import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageFuture;
 import com.ibm.crail.utils.CrailUtils;
-import com.ibm.crail.utils.DirectBufferCache;
 import com.ibm.crail.storage.reflex.ReFlexStorageTier;
 
 import org.slf4j.Logger;
@@ -50,7 +51,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 	private final InetSocketAddress inetSocketAddress;
 	private final ReFlexEndpoint endpoint;
 	private final int sectorSize;
-	private final DirectBufferCache cache;
+	private final BufferCache cache;
 	private final BlockingQueue<ReFlexCommand> freeCommands;
 	private final ReFlexCommand[] commands;
 	private final ReFlexStorageFuture[] futures;
@@ -70,7 +71,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		endpoint.connect(uri);
 
 		sectorSize = endpoint.getSectorSize();
-		cache = new DirectBufferCache();
+		cache = new ReflexBufferCache();
 		ioQeueueSize = endpoint.getIOQueueSize();
 		freeCommands = new ArrayBlockingQueue<ReFlexCommand>(ioQeueueSize);
 		commands = new ReFlexCommand[ioQeueueSize];
@@ -98,7 +99,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		READ;
 	}
 
-	public StorageFuture Op(Operation op, ByteBuffer buffer, BlockInfo remoteMr, long remoteOffset)
+	public StorageFuture Op(Operation op, CrailBuffer buffer, BlockInfo remoteMr, long remoteOffset)
 			throws IOException, InterruptedException {
 		int length = buffer.remaining();
 		if (length > CrailConstants.BLOCK_SIZE){
@@ -139,7 +140,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		StorageFuture future = null;
 		if (aligned) {
 //			LOG.debug("aligned");
-			command.setBuffer(buffer).setLinearBlockAddress(lba);
+			command.setBuffer(buffer.getByteBuffer()).setLinearBlockAddress(lba);
 			switch(op) {
 				case READ:
 					command.read();
@@ -154,14 +155,14 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 //			LOG.info("unaligned");
 			long alignedLength = ReFlexStorageUtils.alignLength(sectorSize, remoteOffset, length);
 
-			ByteBuffer stagingBuffer = cache.getBuffer();
+			CrailBuffer stagingBuffer = cache.getBuffer();
 			stagingBuffer.clear();
 			stagingBuffer.limit((int)alignedLength);
 			try {
 				switch(op) {
 					case READ: {
 						ReFlexStorageFuture f = futures[(int)command.getId()] = new ReFlexStorageFuture(this, (int)alignedLength);
-						command.setBuffer(stagingBuffer).setLinearBlockAddress(lba).read().execute();
+						command.setBuffer(stagingBuffer.getByteBuffer()).setLinearBlockAddress(lba).read().execute();
 						future = new ReFlexStorageUnalignedReadFuture(f, this, buffer, remoteMr, remoteOffset, stagingBuffer);
 						break;
 					}
@@ -169,16 +170,16 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 						if (ReFlexStorageUtils.namespaceSectorOffset(sectorSize, remoteOffset) == 0) {
 							// Do not read if the offset is aligned to sector size
 							int sizeToWrite = length;
-							stagingBuffer.put(buffer);
+							stagingBuffer.put(buffer.getByteBuffer());
 							stagingBuffer.position(0);
-							command.setBuffer(stagingBuffer).setLinearBlockAddress(lba).write().execute();
+							command.setBuffer(stagingBuffer.getByteBuffer()).setLinearBlockAddress(lba).write().execute();
 							future = futures[(int)command.getId()] = new ReFlexStorageFuture(this, sizeToWrite);
 						} else {
 							// RMW but append only file system allows only reading last sector
 							// and dir entries are sector aligned
 							stagingBuffer.limit(sectorSize);
 							ReFlexStorageFuture f = futures[(int)command.getId()] = new ReFlexStorageFuture(this, sectorSize);
-							command.setBuffer(stagingBuffer).setLinearBlockAddress(lba).read().execute();
+							command.setBuffer(stagingBuffer.getByteBuffer()).setLinearBlockAddress(lba).read().execute();
 							future = new ReFlexStorageUnalignedRMWFuture(f, this, buffer, remoteMr, remoteOffset, stagingBuffer);
 						}
 						break;
@@ -194,12 +195,12 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		return future;
 	}
 
-	public StorageFuture write(ByteBuffer buffer, ByteBuffer region, BlockInfo blockInfo, long remoteOffset)
+	public StorageFuture write(CrailBuffer buffer, BlockInfo blockInfo, long remoteOffset)
 			throws IOException, InterruptedException {
 		return Op(Operation.WRITE, buffer, blockInfo, remoteOffset);
 	}
 
-	public StorageFuture read(ByteBuffer buffer, ByteBuffer region, BlockInfo blockInfo, long remoteOffset)
+	public StorageFuture read(CrailBuffer buffer, BlockInfo blockInfo, long remoteOffset)
 			throws IOException, InterruptedException {
 		return Op(Operation.READ, buffer, blockInfo, remoteOffset);
 	}
@@ -218,7 +219,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		}
 	}
 
-	void putBuffer(ByteBuffer buffer) throws IOException {
+	void putBuffer(CrailBuffer buffer) throws IOException {
 		cache.putBuffer(buffer);
 	}
 
