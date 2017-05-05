@@ -16,7 +16,7 @@ public class ReflexBufferCache extends BufferCache {
 
 	@Override
 	public CrailBuffer allocateBuffer() throws IOException {
-		ByteBuffer buffer = ByteBuffer.allocate(CrailConstants.BUFFER_SIZE);
+		ByteBuffer buffer = ByteBuffer.allocateDirect(CrailConstants.BUFFER_SIZE);
 		return OffHeapBuffer.wrap(buffer);
 	}
 
