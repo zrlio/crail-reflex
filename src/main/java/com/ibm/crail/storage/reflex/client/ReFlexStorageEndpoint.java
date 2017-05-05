@@ -71,7 +71,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		endpoint.connect(uri);
 
 		sectorSize = endpoint.getSectorSize();
-		cache = new ReflexBufferCache();
+		cache = new ReFlexBufferCache();
 		ioQeueueSize = endpoint.getIOQueueSize();
 		freeCommands = new ArrayBlockingQueue<ReFlexCommand>(ioQeueueSize);
 		commands = new ReFlexCommand[ioQeueueSize];

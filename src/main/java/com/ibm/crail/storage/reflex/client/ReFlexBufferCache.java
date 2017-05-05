@@ -8,9 +8,9 @@ import com.ibm.crail.conf.CrailConstants;
 import com.ibm.crail.memory.BufferCache;
 import com.ibm.crail.memory.OffHeapBuffer;
 
-public class ReflexBufferCache extends BufferCache {
+public class ReFlexBufferCache extends BufferCache {
 
-	public ReflexBufferCache() throws IOException {
+	public ReFlexBufferCache() throws IOException {
 		super();
 	}
 
