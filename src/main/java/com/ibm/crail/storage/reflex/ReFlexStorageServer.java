@@ -28,9 +28,26 @@ public class ReFlexStorageServer implements StorageServer {
 	@Override
 	public void registerResources(StorageRpcClient namenodeClient) throws Exception {
 		LOG.info("initalizing ReFlex storage");
-		long namespaceSize = 0x5d27216000L / 512 ; // for Intel device
-		namenodeClient.setBlock(0, (int) namespaceSize, 0);
+
+		long namespaceSize = 0x1749a956000L; // for Samsung PM1725 device
+		//long namespaceSize = 0x5d27216000L // for Intel PM3600 device
+		long alignedSize = namespaceSize - (namespaceSize % ReFlexStorageConstants.ALLOCATION_SIZE);
+
+		long addr = 0;
+		while (alignedSize > 0) {
+			//DataNodeStatistics statistics = namenodeClient.getDataNode();
+			//LOG.info("datanode statistics, freeBlocks " + statistics.getFreeBlockCount());
+
+			LOG.info("new block, length " + ReFlexStorageConstants.ALLOCATION_SIZE);
+			LOG.debug("block stag 0, addr " + addr + ", length " + ReFlexStorageConstants.ALLOCATION_SIZE);
+			alignedSize -= ReFlexStorageConstants.ALLOCATION_SIZE;
+			namenodeClient.setBlock(addr, (int)ReFlexStorageConstants.ALLOCATION_SIZE, 0);
+			addr += ReFlexStorageConstants.ALLOCATION_SIZE;
+		}
+		
+
 		this.alive = true;
+
 	}
 
 }

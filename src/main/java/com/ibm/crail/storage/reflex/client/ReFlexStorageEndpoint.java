@@ -64,7 +64,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		endpoint = group.createEndpoint();
 		// FIXME: how to get IP addr
 		// not sure hashCode returns the int vresion of the IP addr string
-		long IPaddr = (long) 172951161; //FIXME: //(long) inetSocketAddress.hashCode();
+		long IPaddr = (long) 172951170; //FIXME: //(long) inetSocketAddress.hashCode();
 		System.out.format("inet long is %d, now call connect...\n", IPaddr);
 		endpoint.hello_reflex();
 		URI uri = new URI("reflex://" + IPaddr + ":" + inetSocketAddress.getPort());
