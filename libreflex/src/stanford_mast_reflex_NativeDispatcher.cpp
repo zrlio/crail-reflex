@@ -34,6 +34,8 @@
 
 #include <sys/prctl.h>
 
+#include <ixev.h>
+
 //#include <rte_config.h>
 //#include <rte_lcore.h>
 
@@ -274,6 +276,18 @@ JNIEXPORT void JNICALL Java_stanford_mast_reflex_NativeDispatcher__1connect
 	printf("worker on cpu %d\n", worker->cpu);
 
 	set_affinity(worker->cpu);
+
+
+	/********* TEST LIBIX **********/
+	struct ixev_ctx ctx;  
+/*
+	ret = ixev_init_thread();
+	if (ret) {
+       fprintf(stderr, "unable to init IXEV\n");
+       return;
+    };
+*/
+	/*******************************/
 
 	worker->base = event_base_new();
 	if (!worker->base) {
