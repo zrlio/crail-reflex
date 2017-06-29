@@ -8,7 +8,7 @@
 Building the source requires [Apache Maven](http://maven.apache.org/) and [GNU/autotools](http://www.gnu.org/software/autoconf/autoconf.html) and Java version 8 or higher.
 To build Crail-ReFlex and its example programs, execute the following steps:
 
-1. Compile Crail, see instructions in [Crail README](https://github.com/zrlio/crail). You will first need to compile [DiSNI](https://github.com/zrlio/disni) and [DARPC](https://github.com/zrlio/darpc).
+1. Compile Crail, see instructions in [Crail README](https://github.com/zrlio/crail). You will first need to compile [DiSNI](https://github.com/zrlio/disni) and [DaRPC](https://github.com/zrlio/darpc).
 
 2. Compile the Java sources for Crail-ReFlex and copy jar to Crail home directory: 
 
@@ -17,22 +17,17 @@ To build Crail-ReFlex and its example programs, execute the following steps:
    cp /path/to/crail-reflex/target/crail-reflex-1.0.jar /path/to/crail/assembly/target/crail-1.0/bin/jars/
    ```
 
-3. Compile libreflex using: 
+3. Compile libreflex and add to classpath: 
    
    ```
    cd libreflex 
    ./autoprepare.sh
    ./configure --with-jdk=\<path\>
    sudo make install
-   ```
-
-4. Make sure libreflex is in your library path: 
-
-   ```
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
    ```
 
-A Crail-ReFlex datanode communicates with a Crail namenode. There are several options for the namenode setup. If your hardware supports RDMA, you can use the default DARPC-based namenode in Crail. Otherwise, you can either i) setup [SoftiWARP](https://github.com/zrlio/softiwarp) for software-based RDMA support and run the default DARPC Crail namenode or ii) run the [Crail-netty](https://github.com/zrlio/crail-netty) namenode which uses TCP/IP and does not require RDMA support.
+A Crail-ReFlex datanode communicates with a Crail namenode. There are several options for the namenode setup. If your hardware supports RDMA, you can use the default DaRPC-based namenode in Crail. Otherwise, you can either i) setup [SoftiWARP](https://github.com/zrlio/softiwarp) for software-based RDMA support and run the default DaRPC Crail namenode or ii) run the [Crail-netty](https://github.com/zrlio/crail-netty) namenode which uses TCP/IP and does not require RDMA support.
 
 
 ## Running a simple example
