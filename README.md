@@ -10,11 +10,11 @@ To build Crail-ReFlex and its example programs, execute the following steps:
 
 1. Compile Crail, see instructions in [Crail README](https://github.com/zrlio/crail). You will first need to compile [DiSNI](https://github.com/zrlio/disni) and [DaRPC](https://github.com/zrlio/darpc).
 
-2. Compile the Java sources for Crail-ReFlex and copy jar to Crail home directory: 
+2. Compile the Java sources for Crail-ReFlex and copy jar to CRAIL\_HOME jars directory: 
 
    ```
    mvn -DskipTests install
-   cp /path/to/crail-reflex/target/crail-reflex-1.0.jar /path/to/crail/assembly/target/crail-1.0/bin/jars/
+   cp /path/to/crail-reflex/target/crail-reflex-1.0.jar /path/to/crail/assembly/target/crail-1.0-bin/jars/
    ```
 
 3. Compile libreflex and add to classpath: 
