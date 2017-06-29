@@ -6,10 +6,9 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.io.IOException;
 import java.nio.ByteOrder;
-import com.ibm.disni.DiSNIEndpoint;
 
 //public class ReFlexEndpoint implements DiSNIEndpoint {
-public class ReFlexEndpoint implements DiSNIEndpoint {
+public class ReFlexEndpoint { 
 
 	private final ReFlexEndpointGroup group; 
     private final NativeDispatcher nativeDispatcher;
@@ -46,27 +45,6 @@ public class ReFlexEndpoint implements DiSNIEndpoint {
 		this.completedArray.order(ByteOrder.nativeOrder());
 		this.completedArrayAddress = ((DirectBuffer)completedArray).address();
 	}
-
-/*	
-	//public ReFlexEndpoint(ReFlexEndpointGroup group, NvmfConnection newConnection) {
-	public ReFlexEndpoint(NativeDispatcher nativeDispatcher) {
-		//this.nativeDispatcher = new NativeDispatcher();
-		this.nativeDispatcher = nativeDispatcher;
-		this.open = false; //FIXME: should this be set to true??
-		this.nsSectorSize = 512;
-		//this.nsSize = 0x1749a956000L / nsSectorSize; //for SAMSUNG device
-		this.nsSize = 0x5d27216000L / nsSectorSize; //for Intel device
-
-		//FIXME: nvmf gets IOqueueSize when connect, and doesn't seem to constantly update it
-		//       so I think it's a static max io queue size value but should check
-		this.ioQueueSize = 16;
-
-		// "completed" array init
-		this.completedArray = ByteBuffer.allocateDirect(COMPLETED_ARRAY_SIZE * 8 + COMPLETED_ARRAY_START_OFFSET);
-		this.completedArray.order(ByteOrder.nativeOrder());
-		this.completedArrayAddress = ((DirectBuffer)completedArray).address();
-	}
-*/	
 
 	public void hello_reflex(){
 		nativeDispatcher._hello_reflex();

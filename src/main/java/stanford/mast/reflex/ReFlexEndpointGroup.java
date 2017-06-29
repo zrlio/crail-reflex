@@ -22,19 +22,15 @@
 
 package stanford.mast.reflex;
 
-//import com.ibm.disni.DiSNIGroup;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ibm.disni.DiSNIGroup;
-import com.ibm.disni.DiSNIServerEndpoint;
 
 // ReFlexEndpointGroup is the starting point for making a ReFlexEndpoint for each connection
 // manage some common setup in here
-//public class ReFlexEndpointGroup implements DiSNIGroup<NvmeEndpoint> {
-public class ReFlexEndpointGroup implements DiSNIGroup {
+public class ReFlexEndpointGroup {
 	private ReFlexSetup reflex; 
     private final NativeDispatcher nativeDispatcher;
 	
@@ -52,10 +48,6 @@ public class ReFlexEndpointGroup implements DiSNIGroup {
 		return new ReFlexEndpoint(this, nativeDispatcher);
 	}
 	
-	public DiSNIServerEndpoint createServerEndpoint() throws Exception {
-		return null;
-	}	
-
 	//--------------- internal ------------------
 
 	public ByteBuffer allocateBuffer(int size, int alignment) {

@@ -38,7 +38,7 @@
 //#include <rte_lcore.h>
 
 
-#define PACKAGE_NAME "com/ibm/disni/reflex"
+#define PACKAGE_NAME "stanford/mast/reflex"
 
 #define SECTOR_SIZE 512 
 
@@ -129,7 +129,7 @@ class JNIString {
 
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _malloc
  * Signature: (JJ)J
  */
@@ -144,7 +144,7 @@ JNIEXPORT jlong JNICALL Java_stanford_mast_reflex_NativeDispatcher__1malloc
 }
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _free
  * Signature: (J)V
  */
@@ -156,7 +156,7 @@ JNIEXPORT void JNICALL Java_stanford_mast_reflex_NativeDispatcher__1free
 }
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _hello_reflex
  * Signature: ()V
  */
@@ -170,7 +170,7 @@ JNIEXPORT void JNICALL Java_stanford_mast_reflex_NativeDispatcher__1hello_1refle
 void connect_cb(struct bufferevent *bev, short events, void *ptr)
 {
 	if (events & BEV_EVENT_CONNECTED) {
-		//printf("connected to the server!\n");
+		printf("connected to the server!\n");
     } else if (events & BEV_EVENT_ERROR) {
     	printf("could not connect to ReFlex server\n");
 	}
@@ -255,7 +255,7 @@ static void set_affinity(int cpu)
 
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _connect
  * Signature: ()V
  */
@@ -307,7 +307,7 @@ JNIEXPORT void JNICALL Java_stanford_mast_reflex_NativeDispatcher__1connect
 
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _poll
  * Signature: ()V
  */
@@ -330,7 +330,7 @@ JNIEXPORT jint JNICALL Java_stanford_mast_reflex_NativeDispatcher__1poll
 
 
 /*
- * Class:     com_ibm_disni_reflex_NativeDispatcher
+ * Class:     stanford_mast_reflex_NativeDispatcher
  * Method:    _submit_io
  * Signature: (JJIJZ)V
  */

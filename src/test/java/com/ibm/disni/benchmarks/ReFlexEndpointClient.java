@@ -44,7 +44,6 @@ public class ReFlexEndpointClient extends ReFlexClientBenchmark {
 
 	public long run(long iterations, int queueDepth, int transferSize, AccessPattern accessPattern, boolean write) throws IOException {
 		ByteBuffer buffer = group.allocateBuffer(transferSize, 4096); 
-		//ByteBuffer buffer = endpoint.allocateBuffer(transferSize, 4096); //FIXME: can we do a DirectBuffer here?
 		byte bytes[] = new byte[buffer.capacity()];
 		random.nextBytes(bytes);
 		buffer.put(bytes);

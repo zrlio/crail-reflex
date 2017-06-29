@@ -21,9 +21,19 @@ public abstract class ReFlexClientBenchmark {
 
 	abstract void close() throws IOException;
 
+	long IPconvertDec(String ip){
+		String[] addrArray = ip.split("\\."); 
+		long num = 0; 
+		for (int i = 0; i < addrArray.length; i++) { 
+			int power = 3 - i; 
+			num += ((Integer.parseInt(addrArray[i]) % 256 * Math.pow(256, power))); 
+		}
+		return num;
+	}
+
 	void start(String[] args) throws Exception {
 		Options options = new Options();
-		Option address = Option.builder("a").required().desc("ip address").hasArg().type(Number.class).build();
+		Option address = Option.builder("a").required().desc("ip address").hasArg().build();
 		Option port = Option.builder("p").desc("port").hasArg().type(Number.class).build();
 		Option iterations = Option.builder("i").required().desc("iterations").hasArg().type(Number.class).build();
 		Option queueDepth = Option.builder("qd").required().desc("queue depth").hasArg().type(Number.class).build();
@@ -52,8 +62,7 @@ public abstract class ReFlexClientBenchmark {
 			iterationsValue = ((Number)line.getParsedOptionValue("i")).intValue();
 			queueDepthValue = ((Number)line.getParsedOptionValue("qd")).intValue();
 			sizeValue = ((Number)line.getParsedOptionValue("s")).intValue();
-			IPaddr = ((Number)line.getParsedOptionValue("a")).longValue();
-			//IPaddr = ((Number)line.getParsedOptionValue("a")).intValue();
+			IPaddr = IPconvertDec(line.getOptionValue("a"));
 			dst_port = ((Number)line.getParsedOptionValue("p")).intValue();
 
 		} catch (ParseException e) {
@@ -61,7 +70,7 @@ public abstract class ReFlexClientBenchmark {
 			System.exit(-1);
 		}
 
-		URI uri = new URI("reflex:://" + IPaddr + ":" + dst_port);
+		URI uri = new URI("reflex://" + IPaddr + ":" + dst_port);
 		connect(uri);
 
 		AccessPattern accessPatternValue = AccessPattern.valueOf(line.getOptionValue("m"));
