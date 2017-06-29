@@ -22,7 +22,7 @@ To build Crail-ReFlex and its example programs, execute the following steps:
    ```
    cd libreflex 
    ./autoprepare.sh
-   ./configure --with-jdk=\<path\>
+   ./configure --with-jdk=/path/to/jdk --with-ix=/path/to/reflex
    sudo make install
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib
    ```
