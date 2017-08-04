@@ -33,7 +33,7 @@ import java.util.concurrent.TimeoutException;
 
 public class ReFlexStorageFuture implements StorageFuture, StorageResult {
 
-	private final ReFlexStorageEndpoint endpoint;
+	protected final ReFlexStorageEndpoint endpoint;
 	private final int len;
 	private Exception exception;
 	private volatile boolean done;

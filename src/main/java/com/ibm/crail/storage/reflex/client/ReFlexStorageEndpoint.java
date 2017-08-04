@@ -173,7 +173,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 							stagingBuffer.put(buffer.getByteBuffer());
 							stagingBuffer.position(0);
 							command.setBuffer(stagingBuffer.getByteBuffer()).setLinearBlockAddress(lba).write().execute();
-							future = futures[(int)command.getId()] = new ReFlexStorageFuture(this, sizeToWrite);
+							future = futures[(int)command.getId()] = new ReflexStorageUnalignedWriteFuture(this, sizeToWrite, stagingBuffer);
 						} else {
 							// RMW but append only file system allows only reading last sector
 							// and dir entries are sector aligned
