@@ -29,8 +29,6 @@ import com.ibm.crail.metadata.BlockInfo;
 import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageFuture;
 import com.ibm.crail.utils.CrailUtils;
-import com.ibm.crail.storage.reflex.ReFlexStorageTier;
-
 import org.slf4j.Logger;
 
 import stanford.mast.reflex.IOCompletion;
@@ -41,8 +39,6 @@ import stanford.mast.reflex.ReFlexEndpointGroup;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.util.concurrent.*;
 
 public class ReFlexStorageEndpoint implements StorageEndpoint { 

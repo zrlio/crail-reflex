@@ -22,10 +22,7 @@
 
 package stanford.mast.reflex;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 
 // ReFlexEndpointGroup is the starting point for making a ReFlexEndpoint for each connection

@@ -21,15 +21,11 @@
 
 package stanford.mast.reflex;
 
-import com.ibm.disni.util.MemoryAllocation;
 import sun.nio.ch.DirectBuffer;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 // equivalent of Nvme class for Nvmef
 // does general setup for ReFlex endpoint group

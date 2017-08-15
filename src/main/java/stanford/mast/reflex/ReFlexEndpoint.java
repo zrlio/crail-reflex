@@ -1,7 +1,6 @@
 package stanford.mast.reflex;
 
 import sun.nio.ch.DirectBuffer;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.io.IOException;

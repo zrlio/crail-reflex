@@ -24,14 +24,12 @@ package com.ibm.disni.benchmarks;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ThreadLocalRandom;
 
 import stanford.mast.reflex.ReFlexCommand;
 import stanford.mast.reflex.ReFlexEndpoint;
 import stanford.mast.reflex.ReFlexEndpointGroup;
-import sun.nio.ch.DirectBuffer;
 
 public class ReFlexEndpointClient extends ReFlexClientBenchmark {
 	private final ThreadLocalRandom random;

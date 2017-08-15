@@ -23,6 +23,7 @@
 package com.ibm.crail.storage.reflex;
 
 import com.ibm.crail.conf.CrailConfiguration;
+import com.ibm.crail.metadata.DataNodeInfo;
 import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageServer;
 import com.ibm.crail.storage.reflex.client.ReFlexStorageEndpoint;
@@ -33,7 +34,6 @@ import org.slf4j.Logger;
 import stanford.mast.reflex.ReFlexEndpointGroup;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.util.Arrays;
 
 public class ReFlexStorageTier extends StorageTier {
@@ -57,27 +57,26 @@ public class ReFlexStorageTier extends StorageTier {
 			options.addOption(port);
 			//options.addOption(pcieAddress);
 			CommandLineParser parser = new DefaultParser();
-			HelpFormatter formatter = new HelpFormatter();
-			CommandLine line = null;
 			try {
-				line = parser.parse(options, Arrays.copyOfRange(args, 2, args.length));
+				CommandLine line = parser.parse(options, Arrays.copyOfRange(args, 2, args.length));
 				if (line.hasOption(port.getOpt())) {
 					ReFlexStorageConstants.PORT = ((Number) line.getParsedOptionValue(port.getOpt())).intValue();
 				}
+				if (line.hasOption(bindIp.getOpt())) {
+					ReFlexStorageConstants.IP_ADDR = InetAddress.getByName(line.getOptionValue(bindIp.getOpt()));
+				}
 			} catch (ParseException e) {
 				System.err.println(e.getMessage());
+				HelpFormatter formatter = new HelpFormatter();
 				formatter.printHelp("ReFlex storage tier", options);
 				System.exit(-1);
-			}
-			if (line.hasOption(bindIp.getOpt())) {
-				ReFlexStorageConstants.IP_ADDR = InetAddress.getByName(line.getOptionValue(bindIp.getOpt()));
 			}
 		}
 
 		ReFlexStorageConstants.verify();
 	}
 
-	public StorageEndpoint createEndpoint(InetSocketAddress inetSocketAddress) throws IOException {
+	public StorageEndpoint createEndpoint(DataNodeInfo info) throws IOException {
 		try {
 			if (clientGroup == null) {
 				synchronized (this) {
@@ -86,7 +85,7 @@ public class ReFlexStorageTier extends StorageTier {
 					}
 				}
 			}
-			return new ReFlexStorageEndpoint(clientGroup, inetSocketAddress);
+			return new ReFlexStorageEndpoint(clientGroup, CrailUtils.datanodeInfo2SocketAddr(info));
 		} catch(Exception e){
 			throw new IOException(e);
 		}

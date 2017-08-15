@@ -2,8 +2,6 @@ package com.ibm.disni.benchmarks;
 
 import org.apache.commons.cli.*;
 
-import stanford.mast.reflex.ReFlexEndpoint;
-
 import java.io.IOException;
 import java.net.URI;
 

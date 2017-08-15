@@ -27,10 +27,8 @@ import com.ibm.crail.conf.CrailConstants;
 import org.slf4j.Logger;
 
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 public class ReFlexStorageConstants {
