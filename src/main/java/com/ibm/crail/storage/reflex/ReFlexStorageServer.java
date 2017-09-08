@@ -1,6 +1,11 @@
 package com.ibm.crail.storage.reflex;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
+
+import com.ibm.crail.conf.CrailConfiguration;
+import org.apache.commons.cli.*;
 import org.slf4j.Logger;
 import com.ibm.crail.storage.StorageResource;
 import com.ibm.crail.storage.StorageServer;
@@ -32,30 +37,6 @@ public class ReFlexStorageServer implements StorageServer {
 		return alive;
 	}
 
-//	public void registerResources(StorageRpcClient namenodeClient) throws Exception {
-//		LOG.info("initalizing ReFlex storage");
-//
-//		long namespaceSize = 0x1749a956000L; // for Samsung PM1725 device
-//		//long namespaceSize = 0x5d27216000L // for Intel PM3600 device
-//		long alignedSize = namespaceSize - (namespaceSize % ReFlexStorageConstants.ALLOCATION_SIZE);
-//
-//		long addr = 0;
-//		while (alignedSize > 0) {
-//			//DataNodeStatistics statistics = namenodeClient.getDataNode();
-//			//LOG.info("datanode statistics, freeBlocks " + statistics.getFreeBlockCount());
-//
-//			LOG.info("new block, length " + ReFlexStorageConstants.ALLOCATION_SIZE);
-//			LOG.debug("block stag 0, addr " + addr + ", length " + ReFlexStorageConstants.ALLOCATION_SIZE);
-//			alignedSize -= ReFlexStorageConstants.ALLOCATION_SIZE;
-//			namenodeClient.setBlock(addr, (int)ReFlexStorageConstants.ALLOCATION_SIZE, 0);
-//			addr += ReFlexStorageConstants.ALLOCATION_SIZE;
-//		}
-//		
-//
-//		this.alive = true;
-//
-//	}
-
 	@Override
 	public StorageResource allocateResource() throws Exception {
 		StorageResource resource = null;
@@ -70,4 +51,43 @@ public class ReFlexStorageServer implements StorageServer {
 		return resource;
 	}
 
+	@Override
+	public void init(CrailConfiguration crailConfiguration, String[] strings) throws Exception {
+		ReFlexStorageConstants.updateConstants(crailConfiguration);
+
+		Options options = new Options();
+		Option bindIp = Option.builder("a").desc("ip address to bind to").hasArg().build();
+		Option port = Option.builder("p").desc("port to bind to").hasArg().type(Number.class).build();
+		//Option pcieAddress = Option.builder("s").desc("PCIe address of NVMe device").hasArg().build();
+		options.addOption(bindIp);
+		options.addOption(port);
+		//options.addOption(pcieAddress);
+		CommandLineParser parser = new DefaultParser();
+		try {
+			CommandLine line = parser.parse(options, strings);
+			if (line.hasOption(port.getOpt())) {
+				ReFlexStorageConstants.PORT = ((Number) line.getParsedOptionValue(port.getOpt())).intValue();
+			}
+			if (line.hasOption(bindIp.getOpt())) {
+				ReFlexStorageConstants.IP_ADDR = InetAddress.getByName(line.getOptionValue(bindIp.getOpt()));
+			}
+		} catch (ParseException e) {
+			System.err.println(e.getMessage());
+			HelpFormatter formatter = new HelpFormatter();
+			formatter.printHelp("ReFlex storage tier", options);
+			System.exit(-1);
+		}
+
+		ReFlexStorageConstants.verify();
+	}
+
+	@Override
+	public void printConf(Logger logger) {
+		ReFlexStorageConstants.printConf(logger);
+	}
+
+	@Override
+	public void run() {
+		while(true);
+	}
 }
