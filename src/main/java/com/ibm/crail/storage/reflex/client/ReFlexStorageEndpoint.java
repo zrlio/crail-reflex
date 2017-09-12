@@ -40,6 +40,8 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.concurrent.*;
+import java.nio.ByteBuffer;
+
 
 public class ReFlexStorageEndpoint implements StorageEndpoint { 
 	private static final Logger LOG = CrailUtils.getLogger();
@@ -60,7 +62,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		endpoint = group.createEndpoint();
 		// FIXME: how to get IP addr
 		// not sure hashCode returns the int vresion of the IP addr string
-		long IPaddr = (long) 172951170; //FIXME: //(long) inetSocketAddress.hashCode();
+		long IPaddr = Integer.toUnsignedLong(ByteBuffer.wrap(inetSocketAddress.getAddress().getAddress()).getInt()); //FIXME: //(long) inetSocketAddress.hashCode();
 		System.out.format("inet long is %d, now call connect...\n", IPaddr);
 		endpoint.hello_reflex();
 		URI uri = new URI("reflex://" + IPaddr + ":" + inetSocketAddress.getPort());
