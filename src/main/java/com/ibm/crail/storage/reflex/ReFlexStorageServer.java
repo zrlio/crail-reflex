@@ -2,12 +2,12 @@ package com.ibm.crail.storage.reflex;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import com.ibm.crail.conf.CrailConfiguration;
+import org.apache.crail.conf.CrailConfiguration;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
-import com.ibm.crail.storage.StorageResource;
-import com.ibm.crail.storage.StorageServer;
-import com.ibm.crail.utils.CrailUtils;
+import org.apache.crail.storage.StorageResource;
+import org.apache.crail.storage.StorageServer;
+import org.apache.crail.utils.CrailUtils;
 
 public class ReFlexStorageServer implements StorageServer {
 	private static final Logger LOG = CrailUtils.getLogger();

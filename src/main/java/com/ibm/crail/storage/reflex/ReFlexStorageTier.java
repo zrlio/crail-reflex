@@ -22,9 +22,9 @@
 
 package com.ibm.crail.storage.reflex;
 
-import com.ibm.crail.storage.StorageServer;
+import org.apache.crail.storage.StorageServer;
 import com.ibm.crail.storage.reflex.client.ReflexStorageClient;
-import com.ibm.crail.storage.StorageTier;
+import org.apache.crail.storage.StorageTier;
 
 public class ReFlexStorageTier extends ReflexStorageClient implements StorageTier{
 

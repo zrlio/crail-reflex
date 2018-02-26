@@ -1,11 +1,11 @@
 package com.ibm.crail.storage.reflex.client;
 
-import com.ibm.crail.conf.CrailConfiguration;
-import com.ibm.crail.metadata.DataNodeInfo;
-import com.ibm.crail.storage.StorageClient;
-import com.ibm.crail.storage.StorageEndpoint;
+import org.apache.crail.conf.CrailConfiguration;
+import org.apache.crail.metadata.DataNodeInfo;
+import org.apache.crail.storage.StorageClient;
+import org.apache.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.reflex.ReFlexStorageConstants;
-import com.ibm.crail.utils.CrailUtils;
+import org.apache.crail.utils.CrailUtils;
 
 import org.slf4j.Logger;
 

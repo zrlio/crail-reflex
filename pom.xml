@@ -32,7 +32,7 @@
       <version>1.0</version>
     </dependency>
     <dependency>
-      <groupId>com.ibm.crail</groupId>
+      <groupId>org.apache.crail</groupId>
       <artifactId>crail-storage</artifactId>
       <version>1.0</version>
   </dependency>

@@ -22,8 +22,8 @@
 
 package com.ibm.crail.storage.reflex;
 
-import com.ibm.crail.conf.CrailConfiguration;
-import com.ibm.crail.conf.CrailConstants;
+import org.apache.crail.conf.CrailConfiguration;
+import org.apache.crail.conf.CrailConstants;
 import org.slf4j.Logger;
 import com.ibm.reflex.client.ReflexClientGroup;
 import java.io.IOException;

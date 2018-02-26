@@ -22,8 +22,8 @@
 
 package com.ibm.crail.storage.reflex.client;
 
-import com.ibm.crail.storage.StorageFuture;
-import com.ibm.crail.storage.StorageResult;
+import org.apache.crail.storage.StorageFuture;
+import org.apache.crail.storage.StorageResult;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
