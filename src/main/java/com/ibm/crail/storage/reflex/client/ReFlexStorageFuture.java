@@ -22,92 +22,54 @@
 
 package com.ibm.crail.storage.reflex.client;
 
-import com.ibm.crail.storage.reflex.ReFlexStorageConstants;
 import com.ibm.crail.storage.StorageFuture;
 import com.ibm.crail.storage.StorageResult;
-
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import com.ibm.reflex.client.ReflexFuture;
+
 public class ReFlexStorageFuture implements StorageFuture, StorageResult {
-
-	protected final ReFlexStorageEndpoint endpoint;
-	private final int len;
-	private Exception exception;
-	private volatile boolean done;
-
-	public ReFlexStorageFuture(ReFlexStorageEndpoint endpoint, int len) {
-		this.endpoint = endpoint;
+	private ReflexFuture future;
+	private int len;
+	
+	public ReFlexStorageFuture(ReflexFuture future, int len){
+		this.future = future;
 		this.len = len;
 	}
-
-	public int getLen() {
-		return len;
-	}
-
-	public boolean cancel(boolean b) {
+	
+	@Override
+	public boolean cancel(boolean mayInterruptIfRunning) {
 		return false;
 	}
 
+	@Override
 	public boolean isCancelled() {
 		return false;
 	}
 
-	//void signal(NvmeStatusCodeType statusCodeType, int statusCode) {
-	void signal(int statusCode) {
-		if (statusCode != 0) { //FIXME: hard-coded success --> statusCode == 0
-			exception = new ExecutionException("Error: status code is " + statusCode) {};
-		}
-		done = true;
-	}
-
+	@Override
 	public boolean isDone() {
-		if (!done) {
-			try {
-				endpoint.poll();
-			} catch (IOException e) {
-				exception = e;
-			}
-		}
-		return done;
+		return future.isDone();
 	}
 
+	@Override
 	public StorageResult get() throws InterruptedException, ExecutionException {
-		try {
-			return get(ReFlexStorageConstants.TIME_OUT, ReFlexStorageConstants.TIME_UNIT);
-		} catch (TimeoutException e) {
-			throw new ExecutionException(e);
-		}
+		future.get();
+		return this;
 	}
 
-	public StorageResult get(long timeout, TimeUnit timeUnit) throws InterruptedException, ExecutionException, TimeoutException {
-
-		if (exception != null) {
-			throw new ExecutionException(exception);
-		}
-		if (!done) {
-			long start = System.nanoTime();
-			long end = start + TimeUnit.NANOSECONDS.convert(timeout, timeUnit);
-			boolean waitTimeOut;
-			do {
-				try {
-					endpoint.poll();
-				} catch (IOException e) {
-					throw new ExecutionException(e);
-				}
-				// we don't want to trigger timeout on first iteration
-				waitTimeOut = System.nanoTime() > end;
-			} while (!done && !waitTimeOut);
-			if (!done && waitTimeOut) {
-				throw new TimeoutException("get wait time out!");
-			}
-			if (exception != null) {
-				throw new ExecutionException(exception);
-			}
-		}
+	@Override
+	public StorageResult get(long timeout, TimeUnit unit)
+			throws InterruptedException, ExecutionException, TimeoutException {
+		future.get();
 		return this;
+	}
+
+	@Override
+	public int getLen() {
+		return len;
 	}
 
 	@Override

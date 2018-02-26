@@ -22,20 +22,9 @@
 
 package com.ibm.crail.storage.reflex;
 
-import com.ibm.crail.conf.CrailConfiguration;
-import com.ibm.crail.metadata.DataNodeInfo;
-import com.ibm.crail.storage.StorageEndpoint;
 import com.ibm.crail.storage.StorageServer;
-import com.ibm.crail.storage.reflex.client.ReFlexStorageEndpoint;
 import com.ibm.crail.storage.reflex.client.ReflexStorageClient;
-import com.ibm.crail.utils.CrailUtils;
 import com.ibm.crail.storage.StorageTier;
-import org.apache.commons.cli.*;
-import org.slf4j.Logger;
-import stanford.mast.reflex.ReFlexEndpointGroup;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.util.Arrays;
 
 public class ReFlexStorageTier extends ReflexStorageClient implements StorageTier{
 

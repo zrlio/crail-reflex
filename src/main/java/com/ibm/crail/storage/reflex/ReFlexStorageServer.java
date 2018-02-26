@@ -2,8 +2,6 @@ package com.ibm.crail.storage.reflex;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-
 import com.ibm.crail.conf.CrailConfiguration;
 import org.apache.commons.cli.*;
 import org.slf4j.Logger;
