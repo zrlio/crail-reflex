@@ -64,11 +64,14 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 	public StorageFuture read(CrailBuffer data, BlockInfo block, long offset)
 			throws IOException, InterruptedException {
 		ByteBuffer buffer = data.getByteBuffer().duplicate();
-		if (buffer.position() != 0){
-			throw new IOException("Can only read from the start, buffer position " + offset);
+		// in case when the slice size is bigger than the block size, a single buffer will be
+		// used for multiple requests. In that case, except the first, all requests will have
+		// a sector aligned position but not the zero position. So this check must be updated.
+		if (buffer.position() % sectorSize != 0){
+			throw new IOException("Can only read from a sector aligned, " + sectorSize + " bytes, locations. Current position " + buffer.position());
 		}
 		if ((offset % sectorSize) != 0){
-			throw new IOException("Can only read at zero offset, offset " + offset);
+			throw new IOException("Can only read at a sector aligned, " + sectorSize + " bytes, offset, current offset " + offset);
 		}
 		int len = buffer.remaining();
 		if ((buffer.remaining() % sectorSize) != 0){
@@ -90,11 +93,12 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 	public StorageFuture write(CrailBuffer data, BlockInfo block, long offset)
 			throws IOException, InterruptedException {
 		ByteBuffer buffer = data.getByteBuffer().duplicate();
-		if (buffer.position() != 0){
-			throw new IOException("Can only write from the start, buffer position " + offset);
+		// see explanation above in the read function
+		if (buffer.position() % sectorSize != 0){
+			throw new IOException("Can only write to a sector aligned, " + sectorSize + " bytes, locations. Current position " + buffer.position());
 		}
 		if ((offset % sectorSize) != 0){
-			throw new IOException("Can only write at zero offset, offset " + offset);
+			throw new IOException("Can only write to a sector aligned, " + sectorSize + " bytes, offset, current offset " + offset);
 		}
 		int len = buffer.remaining();
 		if ((buffer.remaining() % sectorSize) != 0){
@@ -111,7 +115,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		ReflexFuture future = endpoint.put(lba, buffer);
 		return new ReFlexStorageFuture(future, len);
 	}
-	
+
 	private long linearBlockAddress(BlockInfo remoteMr, long remoteOffset, int sectorSize) {
 		return (remoteMr.getAddr() + remoteOffset) / (long)sectorSize;
 	}	
