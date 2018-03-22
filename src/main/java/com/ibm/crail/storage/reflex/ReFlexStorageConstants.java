@@ -44,6 +44,9 @@ public class ReFlexStorageConstants {
 
 	public static final String ALLOCATION_SIZE_KEY = "allocationsize";
 	public static long ALLOCATION_SIZE = 1073741824; /* 1GB */
+
+	public static final String NAMESPACE_SIZE_KEY = "namespacesize";
+	public static long NAMESPACE_SIZE = 0x1749a956000L;
 	
 	public static final String QUEUE_SIZE_KEY = "queuesize";
 	public static int QUEUE_SIZE = ReflexClientGroup.DEFAULT_QUEUE_DEPTH; /* 1GB */	
@@ -79,6 +82,11 @@ public class ReFlexStorageConstants {
 			ALLOCATION_SIZE = Long.parseLong(arg);
 		}
 		
+		arg = get(conf, NAMESPACE_SIZE_KEY);
+		if (arg != null) {
+			NAMESPACE_SIZE = Long.parseLong(arg);
+		}
+
 		arg = get(conf, QUEUE_SIZE_KEY);
 		if (arg != null) {
 			QUEUE_SIZE = Integer.parseInt(arg);
@@ -108,6 +116,7 @@ public class ReFlexStorageConstants {
 		logger.info("crail.storage.reflex.version" + " " + VERSION);
 		logger.info(fullKey(PORT_KEY) + " " + PORT);
 		logger.info(fullKey(ALLOCATION_SIZE_KEY) + " " + ALLOCATION_SIZE);
+		logger.info(fullKey(NAMESPACE_SIZE_KEY) + " " + NAMESPACE_SIZE);
 		logger.info(fullKey(QUEUE_SIZE_KEY) + " " + QUEUE_SIZE);
 		logger.info(fullKey(BLOCK_SIZE_KEY) + " " + BLOCK_SIZE);
 		logger.info(fullKey(NO_DELAY_KEY) + " " + NO_DELAY);

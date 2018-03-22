@@ -19,7 +19,7 @@ public class ReFlexStorageServer implements StorageServer {
 	
 	public ReFlexStorageServer(){
 		this.alive = false;
-		this.namespaceSize = 0x1749a956000L; 
+		this.namespaceSize = ReFlexStorageConstants.NAMESPACE_SIZE; //static defaults, will update based on config in init()
 		this.alignedSize = namespaceSize - (namespaceSize % ReFlexStorageConstants.ALLOCATION_SIZE);
 		this.addr = 0;
 		this.alive = true;
@@ -52,6 +52,8 @@ public class ReFlexStorageServer implements StorageServer {
 	@Override
 	public void init(CrailConfiguration crailConfiguration, String[] strings) throws Exception {
 		ReFlexStorageConstants.updateConstants(crailConfiguration);
+		this.namespaceSize = ReFlexStorageConstants.NAMESPACE_SIZE;
+		this.alignedSize = namespaceSize - (namespaceSize % ReFlexStorageConstants.ALLOCATION_SIZE);
 
 		Options options = new Options();
 		Option bindIp = Option.builder("a").desc("ip address to bind to").hasArg().build();
