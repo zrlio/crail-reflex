@@ -85,7 +85,7 @@ public class ReFlexStorageEndpoint implements StorageEndpoint {
 		}
 		long lba = linearBlockAddress(block, offset, sectorSize);
 
-		System.err.println("WRITING: original buffer: " + data + " duplicateBuffer: " + buffer + " offset: " + offset + " LBA: " + lba + " blockInfo: " + block);
+		System.err.println("READING: original buffer: " + data + " duplicateBuffer: " + buffer + " offset: " + offset + " LBA: " + lba + " blockInfo: " + block);
 		ReflexFuture future = endpoint.get(lba, buffer);
 		return new ReFlexStorageFuture(future, len);
 	}
